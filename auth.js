@@ -1,33 +1,22 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
 
-const config = require('./config/config')
-
-const User = require("./models/User");
+const config = require('./config/config');
 
 exports.isAuthenticated = function (req, res, next) {
+  // console.log(req.headers);
   if (req.headers &&
-    req.headers.authorization &&
-    req.headers.authorization.split(' ')[0] === 'JWT') {
+    req.headers.authorization) {
 
-    var jwtToken = req.headers.authorization.split(' ')[1];
+    let jwtToken = req.headers.authorization;
     jwt.verify(jwtToken, config.secret, function (err, payload) {
-
+      // console.log(payload);
       if (err) {
-        res.status(401).json({ message: 'Unauthorized user!' });
+        return res.status(401).json({ message: 'Auth Unauthorized user!' });
       } else {
-        console.log('decoder: ' + payload.username);
-        // find
-        User.findOne({
-          'username': payload.username
-        }, function (err, user) {
-          if (user) {
-            req.user = user;
-            next();
-          } else {
-            res.status(401).json({ message: 'Unauthorized user!' });
-          }
-        })
+        // console.log('decoder: ' + payload);
+        req.user = payload;
+        next();
       }
     });
   } else {

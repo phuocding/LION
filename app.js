@@ -11,20 +11,7 @@ const errorhandler = require('errorhandler');
 const port = process.env.PORT || 3000;
 const server = http.createServer(app);
 
-
-const db = mongoose.connection;
-
-db.on('error', (error) => {
-  console.error('Mongoose connection: ERROR');
-  throw new Error(error);
-});
-
-db.once('open', () => {
-  console.log('Mongoose connection: CONNECTED');
-});
 mongoose.connect('mongodb://admin:123456@ds111390.mlab.com:11390/lion');// { useMongoClient: true }
-
-mongoose.Promise = global.Promise;
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -33,9 +20,10 @@ app.use(bodyParser.json());
 app.use(cors());
 
 require('./models/User');
-require('./models/Article');
+//require('./models/Article');
 
 // Routes which should handle requests
+// app.use(require('./auth').isAuthenticated());
 app.use(require('./controllers/user'));
 // app.use(require('./controllers/article'));
 
