@@ -1,5 +1,4 @@
-const express = require("express");
-const router = express.Router();
+const router =require('express').Router();
 const mongoose = require("mongoose");
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
@@ -23,24 +22,19 @@ router.post("/api/users", (req, res, next) => {
               error: err
             });
           } else {
-            const user = new User({
-              _id: new mongoose.Types.ObjectId(),
-              userName: req.body.user.userName,
-              email: req.body.user.email,
-              password: hash
-            });
+            const user = new User();
+              
+              user.userName= req.body.user.userName,
+              user.email= req.body.user.email,
+              user.password= hash
+            
             user
               .save()
-              .then(result => {
-                console.log(result);
-                res.status(201).json(user);
+              .then(() => {
+                //console.log(result);
+                return res.json({user: user.toAuthFor()});
               })
-              .catch(err => {
-                console.log(err);
-                res.status(500).json({
-                  error: err
-                });
-              });
+              .catch(next);
           }
         });
       }
