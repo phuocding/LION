@@ -12,7 +12,7 @@ exports.isAuthenticated = function (req, res, next) {
     jwt.verify(jwtToken, config.secret, function (err, payload) {
       // console.log(payload);
       if (err) {
-        return res.status(401).json({ message: 'Auth Unauthorized user!' });
+        return res.status(401).json({ message: 'Unauthorized user Unauthorized user!' });
       } else {
         // console.log('decoder: ' + payload);
         req.user = payload;
