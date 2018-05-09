@@ -23,18 +23,20 @@ const userSchema = mongoose.Schema({
     type: String
   }
 });
+
 userSchema.plugin(uniqueValidator, { message: 'is already taken.' });
-userSchema.methods.comparePassword = function (password) {
+userSchema.methods.comparePassword = (password) => {
   return bcrypt.compareSync(password, this.password)
-}
-userSchema.methods.toJsonToken = function () {
+};
+
+userSchema.methods.toJsonToken = () => {
   return jwt.sign({
     id:this._id,
     userName: this.userName,
     exp:parseInt(Math.floor(Date.now()/1000)+(60*60))
   },'secret');
-}
-userSchema.methods.toAuthFor= function (user) {
+};
+userSchema.methods.toAuthFor = (user) => {
   return{
     userName:this.userName,
     email:this.email,
@@ -42,8 +44,6 @@ userSchema.methods.toAuthFor= function (user) {
     bio:this.bio,
     image:this.image
   }
-}
-
-
+};
 
 mongoose.model('User', userSchema);

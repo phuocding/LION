@@ -26,7 +26,7 @@ router.get('/api/user', auth.isAuthenticated, (req, res, next) => {
 router.put('/api/user', auth.isAuthenticated, (req, res, next) => {
   console.log(req.user.id);
   User.findByIdAndUpdate({ _id: req.user.id },
-    { $set: { email: email, bio: bio, image: image } })
+    { $set: { email: req.body.email, bio: req.body.bio, image: req.body.image } })
     .then((user) => {
       res.json(user);
     }).catch(next);
