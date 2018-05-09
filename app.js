@@ -11,7 +11,7 @@ const errorhandler = require('errorhandler');
 const port = process.env.PORT || 3000;
 const server = http.createServer(app);
 
-mongoose.connect('mongodb://admin:123456@ds111390.mlab.com:11390/lion');// { useMongoClient: true }
+mongoose.connect('mongodb://admin:123456@ds119070.mlab.com:19070/fedium');// { useMongoClient: true }
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));

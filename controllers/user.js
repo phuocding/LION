@@ -24,12 +24,13 @@ router.get('/api/user', auth.isAuthenticated, (req, res, next) => {
 
 // Update user
 router.put('/api/user', auth.isAuthenticated, (req, res, next) => {
-  console.log(req.user.id);
+  // console.log(req.user);
+  let user = req.user;
   User.findByIdAndUpdate({ _id: req.user.id },
-    { $set: { email: req.body.email, bio: req.body.bio, image: req.body.image } })
-    .then((user) => {
-      res.json(user);
-    }).catch(next);
+    { $set: { email: req.body.user.email, bio: req.body.user.bio, image: req.body.user.image } })
+    .then(() => {
+      return res.json(user);
+    })
 });
 
 // register
@@ -67,6 +68,7 @@ router.post("/api/users", (req, res, next) => {
 
 // login
 router.post("/api/users/login", (req, res, next) => {
+  // console.log(req.body.user);
   User.findOne({ email: req.body.user.email })
     .then(user => {
       if (!user) {
